@@ -3,16 +3,18 @@ package com.example.cookingbook
 import android.os.Bundle
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.cookingbook.data.AppDatabase
+import com.example.cookingbook.data.RecipeWithStepsAndIngredients
 import com.example.cookingbook.models.Recipe
 import com.example.cookingbook.models.RecipeList
 
 class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
-    private var recipe: Recipe? = null
+    private var recipe: RecipeWithStepsAndIngredients? = null
     private var recipeId: Int? = null
 
     fun setRecipeId(id: Int) {
         this.recipeId = id
-        this.recipe = RecipeList.recipes[id]
+        this.recipe = AppDatabase.getDatabase(requireContext()).recipeDao().getRecipe(id)
     }
 
     override fun onStart() {
@@ -25,9 +27,9 @@ class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
             return
         }
 
-        view.findViewById<TextView>(R.id.recipe_name).text = recipe.name
-        view.findViewById<TextView>(R.id.recipe_difficulty).text = recipe.difficulty
-        view.findViewById<TextView>(R.id.cooking_steps).text = recipe.cookingSteps.joinToString("\n")
+        view.findViewById<TextView>(R.id.recipe_name).text = recipe.recipe.name
+        view.findViewById<TextView>(R.id.recipe_difficulty).text = recipe.recipe.difficulty
+        view.findViewById<TextView>(R.id.cooking_steps).text = recipe.steps.joinToString("\n")
         view.findViewById<TextView>(R.id.ingredients).text = recipe.ingredients.joinToString("\n")
     }
 

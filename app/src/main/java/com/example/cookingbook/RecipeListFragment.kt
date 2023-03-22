@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.ListFragment
-import com.example.cookingbook.models.RecipeList
+import com.example.cookingbook.data.AppDatabase
+import com.example.cookingbook.data.Recipe
 
 class RecipeListFragment : ListFragment() {
 
     companion object {
         interface Listener {
-            fun itemClicked(id: Long)
+            fun itemClicked(id: Int)
         }
     }
 
@@ -24,8 +25,9 @@ class RecipeListFragment : ListFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val names = RecipeList.recipes.map { x -> x.name }.toList()
-        listAdapter = ArrayAdapter(inflater.context, android.R.layout.simple_list_item_1, names)
+        val list = AppDatabase.getDatabase(requireContext()).recipeDao().getAll()
+
+        listAdapter = ArrayAdapter(inflater.context, android.R.layout.simple_list_item_1, list)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -38,6 +40,6 @@ class RecipeListFragment : ListFragment() {
     override fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {
         super.onListItemClick(l, v, position, id)
 
-        this.listener?.itemClicked(id)
+        this.listener?.itemClicked((l.getItemAtPosition(position) as Recipe).uid)
     }
 }

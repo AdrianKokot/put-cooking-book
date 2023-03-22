@@ -11,18 +11,18 @@ class MainActivity : AppCompatActivity(), RecipeListFragment.Companion.Listener 
         setContentView(R.layout.activity_main)
     }
 
-    override fun itemClicked(id: Long) {
+    override fun itemClicked(id: Int) {
         val fragmentContainer = findViewById<View>(R.id.fragment_container)
 
         if (fragmentContainer != null) {
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, RecipeDetailFragment.newInstance(id.toInt()))
+            transaction.replace(R.id.fragment_container, RecipeDetailFragment.newInstance(id))
             transaction.addToBackStack(null)
             transaction.setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             transaction.commit()
         } else {
             val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra(DetailActivity.RECIPE_ID, id.toInt())
+            intent.putExtra(DetailActivity.RECIPE_ID, id)
             startActivity(intent)
         }
     }
