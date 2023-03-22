@@ -12,8 +12,18 @@ class MainActivity : AppCompatActivity(), RecipeListFragment.Companion.Listener 
     }
 
     override fun itemClicked(id: Long) {
-        val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra(DetailActivity.RECIPE_ID, id.toInt())
-        startActivity(intent)
+        val fragmentContainer = findViewById<View>(R.id.fragment_container)
+
+        if (fragmentContainer != null) {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, RecipeDetailFragment.newInstance(id.toInt()))
+            transaction.addToBackStack(null)
+            transaction.setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            transaction.commit()
+        } else {
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra(DetailActivity.RECIPE_ID, id.toInt())
+            startActivity(intent)
+        }
     }
 }
