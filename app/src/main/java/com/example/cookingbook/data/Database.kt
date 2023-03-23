@@ -1,70 +1,15 @@
 package com.example.cookingbook.data
 
 import android.content.Context
-import androidx.room.*
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.cookingbook.data.daos.RecipeDao
+import com.example.cookingbook.data.entities.Recipe
+import com.example.cookingbook.data.entities.RecipeIngredient
+import com.example.cookingbook.data.entities.RecipeStep
 import java.util.concurrent.Executors
-
-@Entity
-data class RecipeStep(
-    val recipeId: Int, val content: String, val order: Int,
-    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
-)
-
-@Entity
-data class RecipeIngredient(
-    val recipeId: Int,
-    val name: String,
-    val amount: Double,
-    val unit: String,
-    val comment: String,
-    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
-)
-
-@Entity
-data class Recipe(
-    val name: String,
-    val difficulty: String,
-    val cookingTime: Int,
-    val servingSize: Int,
-    val calories: Int,
-    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
-) {
-    override fun toString(): String {
-        return "%s (%s) | %d kcal | %d".format(name, difficulty, calories, uid)
-    }
-}
-
-data class RecipeWithStepsAndIngredients(
-    @Embedded val recipe: Recipe, @Relation(
-        entity = RecipeStep::class, parentColumn = "uid", entityColumn = "recipeId"
-    ) val steps: List<RecipeStep>, @Relation(
-        entity = RecipeIngredient::class, parentColumn = "uid", entityColumn = "recipeId"
-    ) val ingredients: List<RecipeIngredient>
-)
-
-@Dao
-interface RecipeDao {
-    @Query("SELECT * FROM recipe")
-    fun getAll(): List<Recipe>
-
-    @Transaction
-    @Query("SELECT * FROM recipe WHERE uid = :recipeId")
-    fun getRecipe(recipeId: Int): RecipeWithStepsAndIngredients
-
-    @Transaction
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(recipe: Recipe, steps: List<RecipeStep>, ingredients: List<RecipeIngredient>)
-
-    @Transaction
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(steps: List<RecipeStep>, ingredients: List<RecipeIngredient>)
-
-
-    @Transaction
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(recipe: Recipe): Long
-}
 
 @Database(entities = [Recipe::class, RecipeStep::class, RecipeIngredient::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
@@ -79,47 +24,74 @@ abstract class AppDatabase : RoomDatabase() {
                     Executors.newSingleThreadExecutor().execute {
                         val recipeDao = getDatabase(context).recipeDao()
 
-                        var recipe = Recipe(
-                            "Pancakes", "Easy", 30, 4, 300
+                        val recipes = listOf(
+                            Recipe(
+                                "Pancakes", "Easy", 30, 4, 300
+                            ),
+                            Recipe(
+                                "Pasta", "Easy", 30, 4, 300
+                            ),
+                            Recipe(
+                                "Pizza", "Easy", 30, 4, 300
+                            )
                         )
-                        var id = recipeDao.insert(recipe).toInt()
 
                         var ingredients = listOf(
-                            RecipeIngredient(id, "Flour", 1.0, "cup", ""),
-                            RecipeIngredient(id, "Milk", 1.0, "cup", ""),
-                            RecipeIngredient(id, "Eggs", 2.0, "", ""),
-                            RecipeIngredient(id, "Sugar", 1.0, "tbsp", ""),
-                            RecipeIngredient(id, "Salt", 1.0, "tsp", ""),
-                            RecipeIngredient(id, "Baking powder", 1.0, "tsp", ""),
-                            RecipeIngredient(id, "Butter", 1.0, "tbsp", "")
+                            listOf(
+                                RecipeIngredient(1, "Flour", 1.0, "cup", ""),
+                                RecipeIngredient(1, "Milk", 1.0, "cup", ""),
+                                RecipeIngredient(1, "Eggs", 2.0, "", ""),
+                                RecipeIngredient(1, "Sugar", 1.0, "tbsp", ""),
+                                RecipeIngredient(1, "Salt", 1.0, "tsp", ""),
+                                RecipeIngredient(1, "Baking powder", 1.0, "tsp", ""),
+                                RecipeIngredient(1, "Butter", 1.0, "tbsp", "")
+                            ),
+                            listOf(
+                                RecipeIngredient(2, "Pasta", 1.0, "cup", ""),
+                                RecipeIngredient(2, "Tomato sauce", 1.0, "cup", ""),
+                                RecipeIngredient(2, "Cheese", 1.0, "cup", ""),
+                                RecipeIngredient(2, "Salt", 1.0, "tsp", ""),
+                                RecipeIngredient(2, "Pepper", 1.0, "tsp", "")
+                            ),
+                            listOf(
+                                RecipeIngredient(3, "Dough", 1.0, "cup", ""),
+                                RecipeIngredient(3, "Tomato sauce", 1.0, "cup", ""),
+                                RecipeIngredient(3, "Cheese", 1.0, "cup", ""),
+                                RecipeIngredient(3, "Salt", 1.0, "tsp", ""),
+                                RecipeIngredient(3, "Pepper", 1.0, "tsp", "")
+                            )
                         )
 
-                        var steps = listOf(
-                            RecipeStep(id, "Mix all ingredients", 0),
-                            RecipeStep(id, "Cook on a pan", 1)
+                        val steps = listOf(
+                            listOf(
+                                RecipeStep(1, "Mix all ingredients", 0),
+                                RecipeStep(1, "Cook on a pan", 1)
+                            ),
+                            listOf(
+                                RecipeStep(2, "Cook pasta", 0),
+                                RecipeStep(2, "Add tomato sauce", 1),
+                                RecipeStep(2, "Add cheese", 2)
+                            ),
+                            listOf(
+                                RecipeStep(3, "Cook dough", 0),
+                                RecipeStep(3, "Add tomato sauce", 1),
+                                RecipeStep(3, "Add cheese", 2)
+                            )
                         )
 
-                        recipeDao.insert(steps, ingredients)
+                        recipes.forEachIndexed { index, recipe ->
+                            val id = recipeDao.insert(recipe).toInt()
 
-                        val recipe2 = Recipe(
-                            "Pasta", "Easy", 30, 4, 300
-                        )
-                        val id2 = recipeDao.insert(recipe2).toInt()
-                        val ingredients2 = listOf(
-                            RecipeIngredient(id2, "Pasta", 1.0, "cup", ""),
-                            RecipeIngredient(id2, "Tomato sauce", 1.0, "cup", ""),
-                            RecipeIngredient(id2, "Cheese", 1.0, "cup", ""),
-                            RecipeIngredient(id2, "Salt", 1.0, "tsp", ""),
-                            RecipeIngredient(id2, "Pepper", 1.0, "tsp", "")
-                        )
+                            ingredients[index].forEach { ingredient ->
+                                ingredient.recipeId = id
+                            }
 
-                        val steps2 = listOf(
-                            RecipeStep(id2, "Cook pasta", 0),
-                            RecipeStep(id2, "Add tomato sauce", 1),
-                            RecipeStep(id2, "Add cheese", 2)
-                        )
+                            steps[index].forEach { step ->
+                                step.recipeId = id
+                            }
 
-                        recipeDao.insert(steps2, ingredients2)
+                            recipeDao.insert(steps[index], ingredients[index])
+                        }
                     }
                 }
             }
@@ -131,8 +103,8 @@ abstract class AppDatabase : RoomDatabase() {
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext, AppDatabase::class.java, "cooking-book-database.db"
-                ).allowMainThreadQueries().addCallback(seedDatabaseCallback(context)).build()
+                    context.applicationContext, AppDatabase::class.java, "cooking-book.db"
+                ).addCallback(seedDatabaseCallback(context)).build()
                 INSTANCE = instance
 
                 instance

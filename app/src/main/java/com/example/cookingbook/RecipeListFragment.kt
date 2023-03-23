@@ -2,6 +2,7 @@ package com.example.cookingbook
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.ListFragment
 import com.example.cookingbook.data.AppDatabase
-import com.example.cookingbook.data.Recipe
+import com.example.cookingbook.data.entities.Recipe
 
 class RecipeListFragment : ListFragment() {
 
@@ -25,9 +26,16 @@ class RecipeListFragment : ListFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val list = AppDatabase.getDatabase(requireContext()).recipeDao().getAll()
-
-        listAdapter = ArrayAdapter(inflater.context, android.R.layout.simple_list_item_1, list)
+        AppDatabase.getDatabase(requireContext())
+            .recipeDao()
+            .getAll().observe(viewLifecycleOwner) { recipes ->
+                d("RecipeListFragment", "recipes: $recipes")
+                listAdapter = ArrayAdapter(
+                    inflater.context,
+                    android.R.layout.simple_list_item_1,
+                    recipes
+                )
+            }
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }

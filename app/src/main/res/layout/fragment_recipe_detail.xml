@@ -11,24 +11,125 @@
             android:layout_height="match_parent">
 
         <TextView
+                android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recipe_name"/>
+                android:id="@+id/recipe_name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:text="test"
+                android:layout_marginVertical="?attr/listPreferredItemPaddingStart"/>
+
+        <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="?attr/listPreferredItemPaddingStart"
+                android:layout_marginHorizontal="?attr/listPreferredItemPaddingStart">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Difficulty: "
+                    android:textStyle="italic"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recipe_difficulty"
+                    android:layout_marginEnd="?attr/listPreferredItemPaddingEnd"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+
+            <TextView
+                    android:layout_marginStart="?attr/listPreferredItemPaddingEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calories in serving: "
+                    android:textStyle="italic"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recipe_calories"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="?attr/listPreferredItemPaddingStart"
+                android:layout_marginHorizontal="?attr/listPreferredItemPaddingStart">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Serving size: "
+                    android:textStyle="italic"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recipe_serving_size"
+                    android:layout_marginEnd="?attr/listPreferredItemPaddingEnd"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+
+            <TextView
+                    android:layout_marginStart="?attr/listPreferredItemPaddingEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cooking time: "
+                    android:textStyle="italic"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recipe_cooking_time"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+        </LinearLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="Ingredients"
+                android:layout_marginVertical="?attr/listPreferredItemPaddingStart"/>
 
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recipe_difficulty"/>
+                android:id="@+id/ingredients"
 
-        <TextView
+                android:layout_marginHorizontal="?attr/listPreferredItemPaddingStart"/>
+
+
+        <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ingredients"/>
+                android:layout_marginVertical="?attr/listPreferredItemPaddingStart"/>
+
+        <TextView
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="Steps"
+                android:layout_marginBottom="?attr/listPreferredItemPaddingStart"/>
 
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/cooking_steps"/>
+                android:id="@+id/cooking_steps"
+                android:layout_marginHorizontal="?attr/listPreferredItemPaddingStart"/>
     </LinearLayout>
 
 </FrameLayout>
