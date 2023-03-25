@@ -26,7 +26,6 @@ class IngredientsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         savedInstanceState?.let {
-
             recipeId = it.getInt(ARG_RECIPE_ID)
             servingSize = it.getInt(ARG_SERVING_SIZE)
         }

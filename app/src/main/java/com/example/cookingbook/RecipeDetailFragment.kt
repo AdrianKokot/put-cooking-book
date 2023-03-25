@@ -49,7 +49,6 @@ class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
             return
         }
 
-
         var ingredientsFragment = childFragmentManager.findFragmentByTag(INGREDIENT_FRAGMENT_TAG)
             ?: IngredientsFragment.newInstance(recipeId ?: -1)
 
