@@ -29,7 +29,6 @@ class RecipeListFragment : ListFragment() {
         AppDatabase.getDatabase(requireContext())
             .recipeDao()
             .getAll().observe(viewLifecycleOwner) { recipes ->
-                d("RecipeListFragment", "recipes: $recipes")
                 listAdapter = ArrayAdapter(
                     inflater.context,
                     android.R.layout.simple_list_item_1,
