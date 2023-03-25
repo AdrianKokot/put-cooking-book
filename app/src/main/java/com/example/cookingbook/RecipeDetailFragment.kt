@@ -1,9 +1,6 @@
 package com.example.cookingbook
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.cookingbook.data.AppDatabase
@@ -26,7 +23,6 @@ class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
         }
 
         GlobalScope.launch {
-
             val recipe = AppDatabase.getDatabase(requireContext()).recipeDao().getRecipe(recipeId)
             view.findViewById<TextView>(R.id.recipe_name).text = recipe.recipe.name
             view.findViewById<TextView>(R.id.recipe_difficulty).text = recipe.recipe.difficulty
@@ -40,16 +36,6 @@ class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.add(R.id.ingredients_fragment_container, IngredientsFragment.newInstance(recipeId ?: -1))
-        transaction.commit()
-
-        return view
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt(ARG_RECIPE_ID, recipeId ?: -1)
         super.onSaveInstanceState(outState)
@@ -57,18 +43,27 @@ class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            recipeId = it.getInt(ARG_RECIPE_ID)
-            recipeId = if (recipeId == -1) null else recipeId
+
+        if (savedInstanceState != null) {
+            recipeId = savedInstanceState.getInt(ARG_RECIPE_ID)
+            return
         }
+
+
+        var ingredientsFragment = childFragmentManager.findFragmentByTag(INGREDIENT_FRAGMENT_TAG)
+            ?: IngredientsFragment.newInstance(recipeId ?: -1)
+
+        childFragmentManager.beginTransaction()
+            .replace(R.id.ingredients_fragment_container, ingredientsFragment)
+            .commit()
     }
 
     companion object {
         @JvmStatic
         fun newInstance(recipeId: Int) = RecipeDetailFragment().apply {
-            arguments = Bundle().apply {
-                putInt(ARG_RECIPE_ID, recipeId)
-            }
+            this.recipeId = recipeId
         }
+
+        private const val INGREDIENT_FRAGMENT_TAG = "ingredientFragment"
     }
 }

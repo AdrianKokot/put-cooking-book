@@ -4,17 +4,22 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
 class DetailActivity : AppCompatActivity() {
-    private lateinit var detailFragment: RecipeDetailFragment
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val recipeId = intent.extras?.getInt(RECIPE_ID)
-        if (recipeId != null) {
+        if (savedInstanceState == null) {
 
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.add(R.id.fragment_container, RecipeDetailFragment.newInstance(recipeId))
-            transaction.commit()
+            val recipeId = intent.extras?.getInt(RECIPE_ID)
+
+            if (recipeId != null) {
+                val detailFragment =
+                    supportFragmentManager.findFragmentByTag(DETAIL_FRAGMENT_TAG)
+                        ?: RecipeDetailFragment.newInstance(recipeId)
+
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, detailFragment)
+                    .commit()
+            }
         }
 
         setContentView(R.layout.activity_detail)
@@ -22,5 +27,6 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val RECIPE_ID = "id"
+        private const val DETAIL_FRAGMENT_TAG = "detail_fragment"
     }
 }

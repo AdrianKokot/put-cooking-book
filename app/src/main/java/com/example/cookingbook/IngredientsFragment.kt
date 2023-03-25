@@ -24,11 +24,23 @@ class IngredientsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
+
+        savedInstanceState?.let {
+
             recipeId = it.getInt(ARG_RECIPE_ID)
             servingSize = it.getInt(ARG_SERVING_SIZE)
-            recipeId = if (recipeId == -1) null else recipeId
-            servingSize = if (servingSize == -1) null else servingSize
+        }
+
+        val recipeId = this.recipeId ?: return
+
+        GlobalScope.launch {
+            recipe = AppDatabase.getDatabase(requireContext()).recipeDao().getRecipe(recipeId)
+
+            if (servingSize == null) {
+                servingSize = recipe?.recipe?.servingSize
+            }
+
+            renderUi()
         }
     }
 
@@ -52,8 +64,8 @@ class IngredientsFragment : Fragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(ARG_RECIPE_ID, recipeId ?: -1)
-        outState.putInt(ARG_SERVING_SIZE, servingSize ?: -1)
+        outState.putInt(ARG_RECIPE_ID, recipeId!!)
+        outState.putInt(ARG_SERVING_SIZE, servingSize!!)
         super.onSaveInstanceState(outState)
     }
 
@@ -80,30 +92,10 @@ class IngredientsFragment : Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        if (recipe != null) {
-            return
-        }
-
-        val recipeId = this.recipeId ?: return
-
-        GlobalScope.launch {
-            recipe = AppDatabase.getDatabase(requireContext()).recipeDao().getRecipe(recipeId)
-            servingSize = recipe?.recipe?.servingSize
-            renderUi()
-        }
-
-    }
-
     companion object {
         @JvmStatic
-        fun newInstance(recipeId: Int) =
-            IngredientsFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_RECIPE_ID, recipeId)
-                }
-            }
+        fun newInstance(recipeId: Int) = IngredientsFragment().apply {
+            this.recipeId = recipeId
+        }
     }
 }

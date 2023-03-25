@@ -2,7 +2,6 @@ package com.example.cookingbook
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +45,6 @@ class RecipeListFragment : ListFragment() {
 
     override fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {
         super.onListItemClick(l, v, position, id)
-
         this.listener?.itemClicked((l.getItemAtPosition(position) as Recipe).uid)
     }
 }
