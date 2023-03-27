@@ -49,11 +49,15 @@ class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
             return
         }
 
-        var ingredientsFragment = childFragmentManager.findFragmentByTag(INGREDIENT_FRAGMENT_TAG)
+        val ingredientsFragment = childFragmentManager.findFragmentByTag(INGREDIENT_FRAGMENT_TAG)
             ?: IngredientsFragment.newInstance(recipeId ?: -1)
+
+        val timerFragment = childFragmentManager.findFragmentByTag(TIMER_FRAGMENT_TAG)
+            ?: TimerFragment.newInstance()
 
         childFragmentManager.beginTransaction()
             .replace(R.id.ingredients_fragment_container, ingredientsFragment)
+            .replace(R.id.timer_fragment_container, timerFragment)
             .commit()
     }
 
@@ -64,5 +68,6 @@ class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
         }
 
         private const val INGREDIENT_FRAGMENT_TAG = "ingredientFragment"
+        private const val TIMER_FRAGMENT_TAG = "timerFragment"
     }
 }

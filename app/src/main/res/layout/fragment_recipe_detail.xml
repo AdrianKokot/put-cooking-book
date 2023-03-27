@@ -118,6 +118,16 @@
                 android:id="@+id/cooking_steps"
                 android:layout_marginHorizontal="?attr/listPreferredItemPaddingStart"
                 android:layout_marginVertical="?attr/listPreferredItemPaddingStart"/>
+
+        <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="?attr/listPreferredItemPaddingStart"/>
+
+        <FrameLayout
+                android:id="@+id/timer_fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
     </LinearLayout>
 
 </ScrollView>
