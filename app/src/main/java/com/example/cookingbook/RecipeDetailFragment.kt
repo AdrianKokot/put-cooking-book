@@ -1,16 +1,24 @@
 package com.example.cookingbook
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.cookingbook.data.AppDatabase
-import kotlinx.coroutines.GlobalScope
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 private const val ARG_RECIPE_ID = "recipeID"
 
 class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
     private var recipeId: Int? = null
+    private var recipeIngredientsShare: String = ""
+    private val job = Job()
+    private val uiScope = CoroutineScope(Dispatchers.IO + job)
 
     override fun onStart() {
         super.onStart()
@@ -22,17 +30,16 @@ class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
             return
         }
 
-        GlobalScope.launch {
+        uiScope.launch {
             val recipe = AppDatabase.getDatabase(requireContext()).recipeDao().getRecipe(recipeId)
+            recipeIngredientsShare = "Recipe: ${recipe.recipe.name}\nIngredients:\n${recipe.getIngredientsString()}"
             view.findViewById<TextView>(R.id.recipe_name).text = recipe.recipe.name
             view.findViewById<TextView>(R.id.recipe_difficulty).text = recipe.recipe.difficulty
             view.findViewById<TextView>(R.id.recipe_calories).text = recipe.recipe.calories.toString() + " kcal"
             view.findViewById<TextView>(R.id.recipe_cooking_time).text = recipe.recipe.cookingTime.toString() + " min"
             view.findViewById<TextView>(R.id.recipe_serving_size).text = recipe.recipe.servingSize.toString()
-            view.findViewById<TextView>(R.id.cooking_steps).text =
-                recipe.steps.mapIndexed { index, step -> "%d. %s".format((index + 1), step.content) }
-                    .joinToString("\n\n")
-
+            view.findViewById<TextView>(R.id.cooking_steps).text = recipe.getStepsString()
+            view.findViewById<FloatingActionButton?>(R.id.fab)?.setOnClickListener(::onFabClick)
         }
     }
 
@@ -59,6 +66,22 @@ class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
             .replace(R.id.ingredients_fragment_container, ingredientsFragment)
             .replace(R.id.timer_fragment_container, timerFragment)
             .commit()
+    }
+
+    override fun onDestroy() {
+        job.cancel()
+        super.onDestroy()
+    }
+
+    private fun onFabClick(view: View) {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, recipeIngredientsShare)
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, "Share recipe")
+        startActivity(shareIntent)
     }
 
     companion object {

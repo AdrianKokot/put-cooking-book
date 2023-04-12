@@ -36,9 +36,32 @@ data class Recipe(
 }
 
 data class RecipeWithStepsAndIngredients(
-    @Embedded val recipe: Recipe, @Relation(
+    @Embedded
+    val recipe: Recipe,
+    @Relation(
         entity = RecipeStep::class, parentColumn = "uid", entityColumn = "recipeId"
-    ) val steps: List<RecipeStep>, @Relation(
+    )
+    val steps: List<RecipeStep>,
+    @Relation(
         entity = RecipeIngredient::class, parentColumn = "uid", entityColumn = "recipeId"
-    ) val ingredients: List<RecipeIngredient>
-)
+    )
+    val ingredients: List<RecipeIngredient>
+
+) {
+    fun getIngredientsString(servingSize: Int = recipe.servingSize): String {
+        return ingredients.mapIndexed { index, ingredient ->
+            "%d. %s | %.2f %s\n\t%s".format(
+                index + 1,
+                ingredient.name,
+                ingredient.amount * servingSize / recipe.servingSize,
+                ingredient.unit,
+                ingredient.comment
+            )
+        }.joinToString("\n")
+    }
+
+    fun getStepsString(): String {
+        return steps.mapIndexed { index, step -> "%d. %s".format((index + 1), step.content) }
+            .joinToString("\n\n")
+    }
+}

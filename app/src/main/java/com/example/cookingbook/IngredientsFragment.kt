@@ -76,17 +76,7 @@ class IngredientsFragment : Fragment() {
             val recipe = this.recipe ?: return@post
             val servingSize = this.servingSize ?: return@post
 
-            view.findViewById<TextView>(R.id.ingredients).text =
-                recipe.ingredients.mapIndexed { index, ingredient ->
-                    "%d. %s | %.2f %s\n\t%s".format(
-                        index + 1,
-                        ingredient.name,
-                        ingredient.amount * servingSize / recipe.recipe.servingSize,
-                        ingredient.unit,
-                        ingredient.comment
-                    )
-                }.joinToString("\n")
-
+            view.findViewById<TextView>(R.id.ingredients).text = recipe.getIngredientsString(servingSize)
             view.findViewById<TextView>(R.id.serving_size).text = servingSize.toString()
         }
     }
