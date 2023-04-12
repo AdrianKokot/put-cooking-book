@@ -2,15 +2,16 @@ package com.example.cookingbook.data.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.cookingbook.data.entities.Recipe
-import com.example.cookingbook.data.entities.RecipeIngredient
-import com.example.cookingbook.data.entities.RecipeStep
-import com.example.cookingbook.data.entities.RecipeWithStepsAndIngredients
+import com.example.cookingbook.data.entities.*
 
 @Dao
 interface RecipeDao {
     @Query("SELECT * FROM recipe")
     fun getAll(): LiveData<List<Recipe>>
+
+    @Query("SELECT * FROM recipe WHERE category = :category")
+    fun getAll(category: RecipeCategory): LiveData<List<Recipe>>
+
 
     @Transaction
     @Query("SELECT * FROM recipe WHERE uid = :recipeId")

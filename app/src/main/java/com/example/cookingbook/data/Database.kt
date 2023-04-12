@@ -5,8 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.cookingbook.R
 import com.example.cookingbook.data.daos.RecipeDao
 import com.example.cookingbook.data.entities.Recipe
+import com.example.cookingbook.data.entities.RecipeCategory
 import com.example.cookingbook.data.entities.RecipeIngredient
 import com.example.cookingbook.data.entities.RecipeStep
 import java.util.concurrent.Executors
@@ -26,17 +28,17 @@ abstract class AppDatabase : RoomDatabase() {
 
                         val recipes = listOf(
                             Recipe(
-                                "Pancakes", "Easy", 30, 4, 300
+                                "Pancakes", "Easy", 30, 4, 300, RecipeCategory.Breakfast, R.drawable.pancakes
                             ),
                             Recipe(
-                                "Pasta", "Easy", 30, 4, 300
+                                "Pasta", "Easy", 30, 4, 300, RecipeCategory.Dinner, R.drawable.pasta
                             ),
                             Recipe(
-                                "Pizza", "Easy", 30, 4, 300
+                                "Pizza", "Easy", 30, 4, 300, RecipeCategory.Dinner, R.drawable.pizza
                             )
                         )
 
-                        var ingredients = listOf(
+                        val ingredients = listOf(
                             listOf(
                                 RecipeIngredient(1, "Flour", 1.0, "cup", ""),
                                 RecipeIngredient(1, "Milk", 1.0, "cup", ""),
@@ -103,7 +105,7 @@ abstract class AppDatabase : RoomDatabase() {
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext, AppDatabase::class.java, "cooking-book.db"
+                    context.applicationContext, AppDatabase::class.java, "recipes-app.db"
                 ).addCallback(seedDatabaseCallback(context)).build()
                 INSTANCE = instance
 

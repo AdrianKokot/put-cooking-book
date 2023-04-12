@@ -28,6 +28,8 @@ data class Recipe(
     val cookingTime: Int,
     val servingSize: Int,
     val calories: Int,
+    val category: RecipeCategory,
+    val imageId: Int,
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
 ) {
     override fun toString(): String {

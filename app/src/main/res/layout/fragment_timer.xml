@@ -26,13 +26,13 @@
 
         <EditText
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:id="@+id/timer_minutes"
                 android:inputType="time"
                 android:text="0"
                 style="@style/Widget.Material3.MaterialTimePicker.Display.TextInputEditText"
                 android:textAlignment="center"
-                android:textSize="24sp"
+                android:textSize="28sp"
                 android:minWidth="32dp"/>
 
         <TextView
@@ -44,11 +44,11 @@
 
         <EditText
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:id="@+id/timer_seconds"
                 android:inputType="number"
                 style="@style/Widget.Material3.MaterialTimePicker.Display.TextInputEditText"
-                android:textSize="24sp"
+                android:textSize="28sp"
                 android:text="0"
                 android:textAlignment="center"
                 android:minWidth="64dp"/>
