@@ -3,9 +3,11 @@ package com.example.cookingbook
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.cookingbook.data.AppDatabase
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +42,13 @@ class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
             view.findViewById<TextView>(R.id.recipe_serving_size).text = recipe.recipe.servingSize.toString()
             view.findViewById<TextView>(R.id.cooking_steps).text = recipe.getStepsString()
             view.findViewById<FloatingActionButton?>(R.id.fab)?.setOnClickListener(::onFabClick)
+            view.findViewById<MaterialToolbar?>(R.id.topAppBar)?.let { toolbar ->
+                toolbar.title = recipe.recipe.name
+                view.findViewById<ImageView>(R.id.toolbar_recipe_image).setImageResource(recipe.recipe.imageId)
+                toolbar.setNavigationOnClickListener {
+                    requireActivity().finish()
+                }
+            }
         }
     }
 

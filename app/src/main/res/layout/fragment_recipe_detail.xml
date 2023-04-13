@@ -2,12 +2,57 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ScrollView
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="256dp"
+            app:liftOnScroll="true">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentScrim="?attr/colorPrimary"
+                app:statusBarScrim="?attr/colorPrimaryVariant"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:expandedTitleTextColor="@android:color/transparent"
+                app:collapsedTitleTextColor="@color/design_default_color_on_primary">
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/pizza"
+                    android:id="@+id/toolbar_recipe_image"
+                    android:fitsSystemWindows="true"
+                    android:contentDescription="@string/recipe_image"
+                    />
+
+            <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/topAppBar"
+                    app:layout_collapseMode="pin"
+                    android:background="@android:color/transparent"
+                    android:elevation="1dp"
+                    app:layout_scrollFlags="scroll|enterAlways|snap"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:title="Title"
+                    app:navigationIconTint="@color/design_default_color_on_primary"
+                    app:navigationIcon="@drawable/baseline_arrow_back_24"
+                    />
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context=".RecipeDetailFragment">
 
         <LinearLayout
@@ -21,7 +66,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/recipe_name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:text="test"
                     android:layout_marginVertical="?attr/listPreferredItemPaddingStart"/>
 
             <com.google.android.material.divider.MaterialDivider
@@ -38,7 +82,7 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Difficulty: "
+                        android:text="@string/difficulty"
                         android:textStyle="italic"/>
 
                 <TextView
@@ -52,7 +96,7 @@
                         android:layout_marginStart="?attr/listPreferredItemPaddingEnd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Calories in serving: "
+                        android:text="@string/calories_in_serving"
                         android:textStyle="italic"/>
 
                 <TextView
@@ -72,7 +116,7 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Default serving size: "
+                        android:text="@string/default_serving_size"
                         android:textStyle="italic"/>
 
                 <TextView
@@ -86,7 +130,7 @@
                         android:layout_marginStart="?attr/listPreferredItemPaddingEnd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Cooking time: "
+                        android:text="@string/cooking_time"
                         android:textStyle="italic"/>
 
                 <TextView
@@ -115,7 +159,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:text="Steps"/>
+                    android:text="@string/steps"/>
 
             <TextView
                     android:layout_width="match_parent"
@@ -135,7 +179,7 @@
                     android:layout_height="wrap_content"/>
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"

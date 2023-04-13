@@ -105,7 +105,7 @@ abstract class AppDatabase : RoomDatabase() {
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext, AppDatabase::class.java, "recipes-app.db"
+                    context.applicationContext, AppDatabase::class.java, "recipes"
                 ).addCallback(seedDatabaseCallback(context)).build()
                 INSTANCE = instance
 

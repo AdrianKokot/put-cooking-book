@@ -10,7 +10,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change serving size"
+            android:text="@string/change_serving_size"
             android:layout_marginVertical="?attr/listPreferredItemPaddingStart"/>
 
     <LinearLayout
@@ -19,21 +19,23 @@
             android:layout_height="wrap_content">
 
         <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
                 android:text="-"
                 android:id="@+id/decrement_serving_size"/>
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Serving Size: "
+                android:text="@string/serving_size"
                 android:id="@+id/serving_size"
                 android:layout_marginHorizontal="?attr/listPreferredItemPaddingStart"/>
 
         <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
                 android:text="+"
                 android:id="@+id/increment_serving_size"/>
     </LinearLayout>
@@ -48,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:text="Ingredients"/>
+            android:text="@string/ingredients"/>
 
     <TextView
             android:layout_width="match_parent"
