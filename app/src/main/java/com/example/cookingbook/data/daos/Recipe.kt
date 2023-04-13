@@ -12,10 +12,9 @@ interface RecipeDao {
     @Query("SELECT * FROM recipe WHERE category = :category")
     fun getAll(category: RecipeCategory): LiveData<List<Recipe>>
 
-
     @Transaction
     @Query("SELECT * FROM recipe WHERE uid = :recipeId")
-    suspend fun getRecipe(recipeId: Int): RecipeWithStepsAndIngredients
+    fun getRecipe(recipeId: Int): LiveData<RecipeWithStepsAndIngredients>
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)

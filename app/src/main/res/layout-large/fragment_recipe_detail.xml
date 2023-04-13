@@ -40,6 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/recipe_difficulty"
+                    android:text="@string/placeholder"
                     android:layout_marginEnd="?attr/listPreferredItemPaddingEnd"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
@@ -54,6 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/recipe_calories"
+                    android:text="@string/placeholder"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
         </LinearLayout>
 
@@ -74,6 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/recipe_serving_size"
+                    android:text="@string/placeholder"
                     android:layout_marginEnd="?attr/listPreferredItemPaddingEnd"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
@@ -88,6 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/recipe_cooking_time"
+                    android:text="@string/placeholder"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
         </LinearLayout>
 

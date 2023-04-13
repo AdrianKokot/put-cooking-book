@@ -9,18 +9,12 @@ import androidx.fragment.app.Fragment
 import com.example.cookingbook.data.AppDatabase
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 private const val ARG_RECIPE_ID = "recipeID"
 
 class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
     private var recipeId: Int? = null
     private var recipeIngredientsShare: String = ""
-    private val job = Job()
-    private val uiScope = CoroutineScope(Dispatchers.IO + job)
 
     override fun onStart() {
         super.onStart()
@@ -32,24 +26,26 @@ class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
             return
         }
 
-        uiScope.launch {
-            val recipe = AppDatabase.getDatabase(requireContext()).recipeDao().getRecipe(recipeId)
-            recipeIngredientsShare = "Recipe: ${recipe.recipe.name}\nIngredients:\n${recipe.getIngredientsString()}"
-            view.findViewById<TextView>(R.id.recipe_name).text = recipe.recipe.name
-            view.findViewById<TextView>(R.id.recipe_difficulty).text = recipe.recipe.difficulty
-            view.findViewById<TextView>(R.id.recipe_calories).text = recipe.recipe.calories.toString() + " kcal"
-            view.findViewById<TextView>(R.id.recipe_cooking_time).text = recipe.recipe.cookingTime.toString() + " min"
-            view.findViewById<TextView>(R.id.recipe_serving_size).text = recipe.recipe.servingSize.toString()
-            view.findViewById<TextView>(R.id.cooking_steps).text = recipe.getStepsString()
-            view.findViewById<FloatingActionButton?>(R.id.fab)?.setOnClickListener(::onFabClick)
-            view.findViewById<MaterialToolbar?>(R.id.topAppBar)?.let { toolbar ->
-                toolbar.title = recipe.recipe.name
-                view.findViewById<ImageView>(R.id.toolbar_recipe_image).setImageResource(recipe.recipe.imageId)
-                toolbar.setNavigationOnClickListener {
-                    requireActivity().finish()
+        AppDatabase.getDatabase(requireContext())
+            .recipeDao()
+            .getRecipe(recipeId)
+            .observe(viewLifecycleOwner) { recipe ->
+                recipeIngredientsShare = "Recipe: ${recipe.recipe.name}\nIngredients:\n${recipe.getIngredientsString()}"
+                view.findViewById<TextView>(R.id.recipe_name).text = recipe.recipe.name
+                view.findViewById<TextView>(R.id.recipe_difficulty).text = recipe.recipe.difficulty
+                view.findViewById<TextView>(R.id.recipe_calories).text = "${recipe.recipe.calories} kcal"
+                view.findViewById<TextView>(R.id.recipe_cooking_time).text = "${recipe.recipe.cookingTime} min"
+                view.findViewById<TextView>(R.id.recipe_serving_size).text = recipe.recipe.servingSize.toString()
+                view.findViewById<TextView>(R.id.cooking_steps).text = recipe.getStepsString()
+                view.findViewById<FloatingActionButton?>(R.id.fab)?.setOnClickListener(::onFabClick)
+                view.findViewById<MaterialToolbar?>(R.id.topAppBar)?.let { toolbar ->
+                    toolbar.title = recipe.recipe.name
+                    view.findViewById<ImageView>(R.id.toolbar_recipe_image).setImageResource(recipe.recipe.imageId)
+                    toolbar.setNavigationOnClickListener {
+                        requireActivity().finish()
+                    }
                 }
             }
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -75,11 +71,6 @@ class RecipeDetailFragment : Fragment(R.layout.fragment_recipe_detail) {
             .replace(R.id.ingredients_fragment_container, ingredientsFragment)
             .replace(R.id.timer_fragment_container, timerFragment)
             .commit()
-    }
-
-    override fun onDestroy() {
-        job.cancel()
-        super.onDestroy()
     }
 
     private fun onFabClick(view: View) {

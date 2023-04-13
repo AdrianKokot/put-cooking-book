@@ -11,8 +11,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.cookingbook.data.AppDatabase
 import com.example.cookingbook.data.entities.RecipeWithStepsAndIngredients
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 private const val ARG_RECIPE_ID = "recipeID"
 private const val ARG_SERVING_SIZE = "servingSize"
@@ -29,18 +27,6 @@ class IngredientsFragment : Fragment() {
             recipeId = it.getInt(ARG_RECIPE_ID)
             servingSize = it.getInt(ARG_SERVING_SIZE)
         }
-
-        val recipeId = this.recipeId ?: return
-
-        GlobalScope.launch {
-            recipe = AppDatabase.getDatabase(requireContext()).recipeDao().getRecipe(recipeId)
-
-            if (servingSize == null) {
-                servingSize = recipe?.recipe?.servingSize
-            }
-
-            renderUi()
-        }
     }
 
     override fun onCreateView(
@@ -55,9 +41,25 @@ class IngredientsFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.decrement_serving_size).setOnClickListener {
-            servingSize = if (servingSize ?: 0 <= 1) 1 else servingSize?.minus(1)
+            servingSize = if ((servingSize ?: 0) <= 1) 1 else servingSize?.minus(1)
             renderUi()
         }
+
+        this.recipeId?.let { recipeId ->
+            AppDatabase.getDatabase(requireContext()).recipeDao()
+                .getRecipe(recipeId)
+                .observe(viewLifecycleOwner) { recipe ->
+                    this.recipe = recipe
+
+                    if (servingSize == null) {
+                        servingSize = recipe?.recipe?.servingSize
+                    }
+
+                    renderUi()
+                }
+        }
+
+
 
         return view
     }

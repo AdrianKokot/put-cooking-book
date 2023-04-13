@@ -37,7 +37,6 @@
                     app:layout_scrollFlags="scroll|enterAlways|snap"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:title="Title"
                     app:navigationIconTint="@color/design_default_color_on_primary"
                     app:navigationIcon="@drawable/baseline_arrow_back_24"
                     />

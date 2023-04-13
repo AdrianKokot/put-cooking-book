@@ -16,4 +16,5 @@
     <string name="ingredients">Ingredients</string>
     <string name="timer">Timer</string>
     <string name="_0">0</string>
+    <string name="placeholder">Placeholder</string>
 </resources>
