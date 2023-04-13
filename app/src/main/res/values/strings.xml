@@ -14,4 +14,6 @@
     <string name="serving_size">Serving Size:</string>
     <string name="change_serving_size">Change serving size</string>
     <string name="ingredients">Ingredients</string>
+    <string name="timer">Timer</string>
+    <string name="_0">0</string>
 </resources>
