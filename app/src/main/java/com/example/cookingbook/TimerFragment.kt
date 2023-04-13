@@ -78,9 +78,6 @@ class TimerFragment : Fragment() {
         secondsView.filters = arrayOf(MinMaxFilter(0, 59))
         minutesView.filters = arrayOf(MinMaxFilter(0, 180))
 
-        refreshUIStates()
-        runTimer()
-
         startButton.setOnClickListener {
             if (secondsView.text.isEmpty() || minutesView.text.isEmpty()) {
                 return@setOnClickListener
@@ -107,6 +104,9 @@ class TimerFragment : Fragment() {
             minutesView.setText("%02d".format(0))
             refreshUIStates()
         }
+
+        runTimer()
+        refreshUIStates()
 
         return view
     }
@@ -151,6 +151,7 @@ class TimerFragment : Fragment() {
         super.onResume()
         if (wasRunning) {
             running = true
+            refreshUIStates()
         }
     }
 
