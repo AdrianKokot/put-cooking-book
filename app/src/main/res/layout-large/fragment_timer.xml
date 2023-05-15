@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:gravity="center_horizontal"
-              tools:context=".TimerFragment"
-              android:layout_marginVertical="?attr/listPreferredItemPaddingStart">
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        tools:context=".TimerFragment"
+        android:layout_marginVertical="?attr/listPreferredItemPaddingStart">
 
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:text="Timer"
-            />
+            android:text="Timer" />
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -33,14 +32,14 @@
                 style="@style/Widget.Material3.MaterialTimePicker.Display.TextInputEditText"
                 android:textAlignment="center"
                 android:textSize="24sp"
-                android:minWidth="32dp"/>
+                android:minWidth="32dp" />
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 style="@style/Widget.Material3.MaterialTimePicker.Display.Divider"
-                android:text=":"/>
+                android:text=":" />
 
         <EditText
                 android:layout_width="wrap_content"
@@ -51,14 +50,13 @@
                 android:textSize="24sp"
                 android:text="0"
                 android:textAlignment="center"
-                android:minWidth="64dp"/>
+                android:minWidth="64dp" />
 
     </LinearLayout>
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center_horizontal">
 
         <Button
@@ -66,21 +64,28 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/baseline_play_arrow_24"
                 style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:id="@+id/start_timer_button"/>
+                android:id="@+id/start_timer_button" />
 
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/baseline_pause_24"
                 style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:id="@+id/pause_timer_button"/>
+                android:id="@+id/pause_timer_button" />
 
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/baseline_stop_24"
                 style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:id="@+id/stop_timer_button"/>
+                android:id="@+id/stop_timer_button" />
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@android:drawable/ic_lock_idle_alarm"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:id="@+id/stop_alarm_button" />
 
     </LinearLayout>
 

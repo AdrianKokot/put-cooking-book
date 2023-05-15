@@ -1,5 +1,9 @@
 package com.example.cookingbook
 
+import android.content.Context.AUDIO_SERVICE
+import android.media.AudioManager
+import android.media.MediaPlayer
+import android.media.VolumeShaper
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,6 +16,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.example.cookingbook.extensions.vibratePhone
+
 
 private const val ARG_PARAM_SECONDS = "seconds"
 private const val ARG_PARAM_RUNNING = "running"
@@ -27,6 +32,13 @@ class TimerFragment : Fragment() {
     private lateinit var startButton: Button
     private lateinit var stopButton: Button
     private lateinit var pauseButton: Button
+    private lateinit var alarmButton: Button
+
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var volumeShaper: VolumeShaper
+    private lateinit var audioManager: AudioManager
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +86,7 @@ class TimerFragment : Fragment() {
         startButton = view.findViewById(R.id.start_timer_button)
         stopButton = view.findViewById(R.id.stop_timer_button)
         pauseButton = view.findViewById(R.id.pause_timer_button)
+        alarmButton = view.findViewById(R.id.stop_alarm_button)
 
         secondsView.filters = arrayOf(MinMaxFilter(0, 59))
         minutesView.filters = arrayOf(MinMaxFilter(0, 180))
@@ -105,24 +118,27 @@ class TimerFragment : Fragment() {
             refreshUIStates()
         }
 
+        alarmButton.setOnClickListener {
+            running = false
+            stopAlarm()
+            initVolumeShaper()
+            refreshUIStates()
+        }
+
         runTimer()
         refreshUIStates()
 
         return view
     }
 
-    private fun stopTimer() {
-        running = false
-        refreshUIStates()
-        vibratePhone(300)
-    }
 
     private fun refreshUIStates() {
         secondsView.isEnabled = !running && seconds == 0
         minutesView.isEnabled = !running && seconds == 0
         startButton.visibility = if (!running || (!running && seconds > 0)) View.VISIBLE else View.GONE
-        pauseButton.visibility = if (running) View.VISIBLE else View.GONE
+        pauseButton.visibility = if (running && !(this::mediaPlayer.isInitialized && mediaPlayer.isPlaying)) View.VISIBLE else View.GONE
         stopButton.visibility = if (seconds > 0) View.VISIBLE else View.GONE
+        alarmButton.visibility = if (this::mediaPlayer.isInitialized && mediaPlayer.isPlaying) View.VISIBLE else View.GONE
     }
 
     private fun runTimer() {
@@ -130,7 +146,8 @@ class TimerFragment : Fragment() {
 
         handler.post {
             if (running && seconds == 0) {
-                stopTimer()
+                playAlarm()
+                refreshUIStates()
             } else if (running) {
                 seconds--
                 secondsView.setText("%02d".format(seconds % 60))
@@ -165,5 +182,48 @@ class TimerFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() = TimerFragment()
+    }
+
+
+    private fun playAlarm() {
+        if (!this::mediaPlayer.isInitialized) {
+            mediaPlayer = MediaPlayer.create(requireContext(), R.raw.alarm_sound)
+            mediaPlayer!!.isLooping = true
+            initVolumeShaper()
+        }
+        audioManager = requireContext().getSystemService(AUDIO_SERVICE) as AudioManager
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0)
+
+        volumeShaper.apply(VolumeShaper.Operation.PLAY)
+        mediaPlayer!!.start()
+
+        vibratePhone(300)
+    }
+
+
+    private fun initVolumeShaper() {
+        val config: VolumeShaper.Configuration = VolumeShaper.Configuration.Builder()
+            .setDuration(10000)
+            .setCurve(floatArrayOf(0f, 1f), floatArrayOf(0f, 1f))
+            .setInterpolatorType(VolumeShaper.Configuration.INTERPOLATOR_TYPE_CUBIC)
+            .build()
+
+        volumeShaper = mediaPlayer.createVolumeShaper(config)
+    }
+
+
+    private fun stopAlarm() {
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.pause()
+            mediaPlayer.seekTo(0)
+        }
+    }
+
+    override fun onDestroy() {
+        if (this::mediaPlayer.isInitialized) {
+            mediaPlayer.stop()
+            mediaPlayer.release()
+        }
+        super.onDestroy()
     }
 }
