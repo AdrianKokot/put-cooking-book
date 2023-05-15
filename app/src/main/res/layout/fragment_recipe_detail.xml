@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -48,7 +49,6 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
-            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -65,11 +65,11 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/recipe_name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:layout_marginVertical="?attr/listPreferredItemPaddingStart"/>
+                    android:layout_marginVertical="?attr/listPreferredItemPaddingStart" />
 
             <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -82,27 +82,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/difficulty"
-                        android:textStyle="italic"/>
+                        android:textStyle="italic" />
 
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/recipe_difficulty"
                         android:layout_marginEnd="?attr/listPreferredItemPaddingEnd"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                 <TextView
                         android:layout_marginStart="?attr/listPreferredItemPaddingEnd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/calories_in_serving"
-                        android:textStyle="italic"/>
+                        android:textStyle="italic" />
 
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/recipe_calories"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
             </LinearLayout>
 
             <LinearLayout
@@ -116,66 +116,66 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/default_serving_size"
-                        android:textStyle="italic"/>
+                        android:textStyle="italic" />
 
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/recipe_serving_size"
                         android:layout_marginEnd="?attr/listPreferredItemPaddingEnd"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                 <TextView
                         android:layout_marginStart="?attr/listPreferredItemPaddingEnd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/cooking_time"
-                        android:textStyle="italic"/>
+                        android:textStyle="italic" />
 
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/recipe_cooking_time"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
             </LinearLayout>
 
             <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
             <FrameLayout
                     android:id="@+id/ingredients_fragment_container"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
             <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="?attr/listPreferredItemPaddingStart"/>
+                    android:layout_marginBottom="?attr/listPreferredItemPaddingStart" />
 
             <TextView
                     android:textAlignment="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:text="@string/steps"/>
+                    android:text="@string/steps" />
 
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/cooking_steps"
                     android:layout_marginHorizontal="?attr/listPreferredItemPaddingStart"
-                    android:layout_marginVertical="?attr/listPreferredItemPaddingStart"/>
+                    android:layout_marginVertical="?attr/listPreferredItemPaddingStart" />
 
             <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="?attr/listPreferredItemPaddingStart"/>
+                    android:layout_marginTop="?attr/listPreferredItemPaddingStart" />
 
             <FrameLayout
                     android:id="@+id/timer_fragment_container"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

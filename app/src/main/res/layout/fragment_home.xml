@@ -12,4 +12,12 @@
             android:textAlignment="center"
             android:text="This is the main screen of recipes application"/>
 
+    <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/tomatoe"
+            android:layout_gravity="center"
+            android:id="@+id/tomatoe_img"
+            />
+
 </FrameLayout>
